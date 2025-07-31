@@ -1,9 +1,53 @@
 {
-    "result": 333333283333335000000,
+    "source_file": "example.py",
     "system_stats": {
-        "cpu_percent": 6.8,
-        "memory_percent": 0.17198676925752604,
+        "cpu_percent": 9.2,
+        "memory_percent": 0.1861043848597883,
         "num_threads": 1
     },
-    "perf_output": "\n Performance counter stats for 'python3 -c \nx = 0\nfor i in range(10_000_000):\n    x += i * i\n':\n\n     3,327,212,471      cycles                                                                \n    15,864,522,450      instructions                     #    4.77  insn per cycle            \n         1,166,968      cache-misses                                                          \n\n       2.354748791 seconds time elapsed\n\n       2.329956000 seconds user\n       0.013987000 seconds sys\n\n\n"
+    "perf_stats": {
+        "cycles": 360356020,
+        "cycle": 1562907626,
+        "cache-misses": 799227
+    },
+    "raw_perf_output": "\n Performance counter stats for 'python3 -c # example_script.py\nx = 0\nfor i in range(1_000_000):\n    x += i * i\nprint(\"Computation complete.\")\n':\n\n       360,356,020      cycles                                                                \n     1,562,907,626      instructions                     #    4.34  insn per cycle            \n           799,227      cache-misses                                                          \n\n       0.259046211 seconds time elapsed\n\n       0.245973000 seconds user\n       0.012998000 seconds sys\n\n\n",
+    "temperatures": [
+        {
+            "chip": "amdgpu",
+            "label": "edge",
+            "temperature_c": 52.0
+        },
+        {
+            "chip": "k10temp",
+            "label": "Tctl",
+            "temperature_c": 54.375
+        },
+        {
+            "chip": "nvme",
+            "label": "Sensor 2",
+            "temperature_c": 45.85
+        },
+        {
+            "chip": "nvme",
+            "label": "Composite",
+            "temperature_c": 47.85
+        },
+        {
+            "chip": "nvme",
+            "label": "Sensor 1",
+            "temperature_c": 47.85
+        },
+        {
+            "chip": "acpitz",
+            "label": "temp1",
+            "temperature_c": 53.0
+        }
+    ],
+    "hwmon_power": [
+        {
+            "chip": "amdgpu",
+            "label": "power1",
+            "power_mw": 5000.0
+        }
+    ]
 }

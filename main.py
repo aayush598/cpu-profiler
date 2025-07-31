@@ -9,7 +9,7 @@ from utils.parser import parse_perf_output
 from core.thermal_monitor import read_temperature_sensors
 from core.power_monitor import read_hwmon_power
 
-def run_code_from_file(filepath: str, block_name="SCRIPT"):
+def run_code_from_file(filepath: str, block_name="SCRIPT", output_path=None):
     if not os.path.isfile(filepath):
         print(f"❌ File not found: {filepath}")
         return
@@ -44,12 +44,13 @@ def run_code_from_file(filepath: str, block_name="SCRIPT"):
         "hwmon_power": hwmon_power
     }
 
-    save_report(report)
+    save_report(report, filename=output_path)
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(description="Profile a Python script using CPU and perf stats.")
     parser.add_argument("--file", type=str, help="Path to the Python file to profile", required=True)
     parser.add_argument("--name", type=str, help="Label for profiling block", default="PROFILED_SCRIPT")
+    parser.add_argument("--output", type=str, help="Destination path for the JSON report", required=False)
 
     args = parser.parse_args()
-    run_code_from_file(args.file, args.name)
+    run_code_from_file(args.file, args.name, args.output)
