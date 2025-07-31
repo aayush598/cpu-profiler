@@ -6,6 +6,7 @@ from core.perf_wrapper import run_perf
 from core.timing import time_block
 from utils.logger import save_report
 from utils.parser import parse_perf_output
+from core.thermal_monitor import read_temperature_sensors
 
 def run_code_from_file(filepath: str, block_name="SCRIPT"):
     if not os.path.isfile(filepath):
@@ -26,12 +27,16 @@ def run_code_from_file(filepath: str, block_name="SCRIPT"):
     perf_raw = run_perf(code)
     perf_parsed = parse_perf_output(perf_raw)
 
+    # Inside report generation
+    temperatures = read_temperature_sensors()
+
     # Save report
     report = {
         "source_file": filepath,
         "system_stats": sys_stats,
         "perf_stats": perf_parsed,
-        "raw_perf_output": perf_raw
+        "raw_perf_output": perf_raw,
+        "temperatures": temperatures
     }
 
     save_report(report)
