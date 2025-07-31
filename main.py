@@ -7,6 +7,7 @@ from core.timing import time_block
 from utils.logger import save_report
 from utils.parser import parse_perf_output
 from core.thermal_monitor import read_temperature_sensors
+from core.power_monitor import read_hwmon_power
 
 def run_code_from_file(filepath: str, block_name="SCRIPT"):
     if not os.path.isfile(filepath):
@@ -30,13 +31,17 @@ def run_code_from_file(filepath: str, block_name="SCRIPT"):
     # Inside report generation
     temperatures = read_temperature_sensors()
 
+    # Power metrics
+    hwmon_power = read_hwmon_power()
+
     # Save report
     report = {
         "source_file": filepath,
         "system_stats": sys_stats,
         "perf_stats": perf_parsed,
         "raw_perf_output": perf_raw,
-        "temperatures": temperatures
+        "temperatures": temperatures,
+        "hwmon_power": hwmon_power
     }
 
     save_report(report)
