@@ -1,0 +1,9 @@
+{
+    "result": 333333283333335000000,
+    "system_stats": {
+        "cpu_percent": 6.8,
+        "memory_percent": 0.17198676925752604,
+        "num_threads": 1
+    },
+    "perf_output": "\n Performance counter stats for 'python3 -c \nx = 0\nfor i in range(10_000_000):\n    x += i * i\n':\n\n     3,327,212,471      cycles                                                                \n    15,864,522,450      instructions                     #    4.77  insn per cycle            \n         1,166,968      cache-misses                                                          \n\n       2.354748791 seconds time elapsed\n\n       2.329956000 seconds user\n       0.013987000 seconds sys\n\n\n"
+}
