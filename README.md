@@ -110,3 +110,8 @@ Once you confirm `perf` is working, we can:
 * Or move on to Phase 4: JSON Logging
 
 Would you like help parsing `perf` output into a dictionary next?
+
+
+
+
+python main.py --file example.py --output reports/my_custom_report.json

@@ -8,6 +8,7 @@ from core.perf_wrapper import run_perf
 from utils.logger import save_report
 
 def profile_function(name="PROFILED_FUNCTION"):
+    
     def decorator(fn):
         @wraps(fn)
         def wrapper(*args, **kwargs):

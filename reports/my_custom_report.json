@@ -1,0 +1,53 @@
+{
+    "source_file": "example.py",
+    "system_stats": {
+        "cpu_percent": 5.0,
+        "memory_percent": 5.6573693203137205,
+        "num_threads": 17
+    },
+    "perf_stats": {
+        "cycles": 9104743705,
+        "cycle": 8323483240,
+        "cache-misses": 85172266
+    },
+    "raw_perf_output": "\n Performance counter stats for 'python3 -c import torch\nimport numpy as np\nimport torch.nn as nn\nimport time\n\n# Parameters (must match Verilog)\nIN_CHANNELS = 2\nOUT_CHANNELS = 1\nIN_HEIGHT = 64\nIN_WIDTH = 64\nKERNEL_SIZE = 2\nSTRIDE = 2\nPADDING = 0\nBATCH_SIZE = 1\nDATA_WIDTH = 8  # bits\n\nOUT_HEIGHT = (IN_HEIGHT + 2 * PADDING - KERNEL_SIZE) // STRIDE + 1\nOUT_WIDTH = (IN_WIDTH + 2 * PADDING - KERNEL_SIZE) // STRIDE + 1\nMODULO = 2 ** DATA_WIDTH  # 256 for 8-bit\n\ndef load_hex_file(filename):\n    with open(filename, 'r') as f:\n        hex_data = f.read().split()\n    return np.array([int(x, 16) for x in hex_data], dtype=np.uint8)\n\n# 1. Load data from hex files\ninput_flat = load_hex_file(\"input_data.txt\")\nweights_flat = load_hex_file(\"weights.txt\")\nbias_flat = load_hex_file(\"bias.txt\")\n\n# 2. Reshape input to [B, C, H, W]\ninput_tensor = torch.tensor(input_flat, dtype=torch.float32).reshape(\n    BATCH_SIZE, IN_CHANNELS, IN_HEIGHT, IN_WIDTH\n)\n\n# 3. Reshape weights to [OUT_CHANNELS, IN_CHANNELS, KH, KW]\nweight_tensor = torch.tensor(weights_flat, dtype=torch.float32).reshape(\n    OUT_CHANNELS, IN_CHANNELS, KERNEL_SIZE, KERNEL_SIZE\n)\n\n# 4. Create bias tensor\nbias_tensor = torch.tensor(bias_flat, dtype=torch.float32)\n\n# 5. Create Conv2D layer manually and assign weights/bias\nconv = nn.Conv2d(IN_CHANNELS, OUT_CHANNELS, KERNEL_SIZE, STRIDE, PADDING, bias=True)\nwith torch.no_grad():\n    conv.weight.copy_(weight_tensor)\n    conv.bias.copy_(bias_tensor)\n\n# 6. Perform convolution\nwith torch.no_grad():\n    # for i in range(5):\n        start_time = time.perf_counter()\n        output = conv(input_tensor)\n        end_time = time.perf_counter()\n        elapsed_time_us = (end_time - start_time) * 1e6  # microseconds\n\n# 7. Convert to 8-bit output using modulo\noutput_8bit = output.to(torch.int32) % MODULO  # simulate uint8 wrap-around':\n\n     9,104,743,705      cycles                                                                \n     8,323,483,240      instructions                     #    0.91  insn per cycle            \n        85,172,266      cache-misses                                                          \n\n       1.469813706 seconds time elapsed\n\n       2.025748000 seconds user\n       0.210040000 seconds sys\n\n\n",
+    "temperatures": [
+        {
+            "chip": "amdgpu",
+            "label": "edge",
+            "temperature_c": 50.0
+        },
+        {
+            "chip": "k10temp",
+            "label": "Tctl",
+            "temperature_c": 74.875
+        },
+        {
+            "chip": "nvme",
+            "label": "Sensor 2",
+            "temperature_c": 47.85
+        },
+        {
+            "chip": "nvme",
+            "label": "Composite",
+            "temperature_c": 46.85
+        },
+        {
+            "chip": "nvme",
+            "label": "Sensor 1",
+            "temperature_c": 46.85
+        },
+        {
+            "chip": "acpitz",
+            "label": "temp1",
+            "temperature_c": 68.0
+        }
+    ],
+    "hwmon_power": [
+        {
+            "chip": "amdgpu",
+            "label": "power1",
+            "power_mw": 5000.0
+        }
+    ]
+}
